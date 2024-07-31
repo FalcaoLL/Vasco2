@@ -22,20 +22,17 @@ let raqueteAltura = 90;
 let meusPontos = 0;
 let pontosDoOponente = 0;
 
+
 //sons do jogo
 let raquetada;
 let ponto;
 let trilha;
 
-function preload() {
-    trilha = loadSound("trilha.mp3");
-    ponto = loadSound("ponto.mp3");
-    raquetada = loadSound("raquetada.mp3");
-}
+let colidiu = false;
 
 function setup() {
-    createCanvas(600, 400);
-    trilha.play();
+  createCanvas(600, 400);
+    trilha.loop();
 }
 
 function draw() {
@@ -74,18 +71,19 @@ function mostraRaquete(x,y) {
     rect(x, y, raqueteComprimento, raqueteAltura);
 }
 
-function movimentaMinhaRaquete(){
-    if (keyIsDown(UP_ARROW)){
-        yRaquete -= 10;
-    }
-    if (keyIsDown(DOWN_ARROW)){
-        yRaquete += 10;
-    }
+function movimentaMinhaRaquete() {
+  if(keyIsDown(UP_ARROW)) {
+    yRaquete -= 10;
+  }
+  if(keyIsDown(DOWN_ARROW)) {
+    yRaquete += 10;
+  }
 }
 
 function verificaColisaoRaquete() {
   if (xBolinha - raio < xRaquete + raqueteComprimento && yBolinha - raio < yRaquete + raqueteAltura && yBolinha + raio > yRaquete) {
     velocidadeXBolinha *= -1;
+     raquetada.play();
   }
 }
 
@@ -93,17 +91,17 @@ function verificaColisaoRaquete(x, y) {
     colidiu = collideRectCircle(x, y, raqueteComprimento, raqueteAltura, xBolinha, yBolinha, raio);
     if (colidiu){
         velocidadeXBolinha *= -1;
+        raquetada.play();
   }
 }
 
-function movimentaRaqueteOponente() {
- if (keyIsDown(87)){
+function movimentaRaqueteOponente(){
+    if (keyIsDown(87)){
         yRaqueteOponente -= 10;
     }
     if (keyIsDown(83)){
         yRaqueteOponente += 10;
     }
-
 }
 
 
@@ -126,12 +124,20 @@ function incluiPlacar(){
 
 
 function marcaPonto() {
-  if (xBolinha > 580) {
-    meusPontos += 1;
-  }
-  if (xBolinha < 10) {
-    pontosDoOponente += 1;
-  }
+    if (xBolinha > 590) {
+        meusPontos += 1;
+        ponto.play();
+    }
+    if (xBolinha < 10) {
+        pontosDoOponente += 1;
+        ponto.play();
+    }
 }
 
+
+function preload(){
+  trilha = loadSound("trilha.mp3");
+  ponto = loadSound("ponto.mp3");
+  raquetada = loadSound("raquetada.mp3");
+}
 
